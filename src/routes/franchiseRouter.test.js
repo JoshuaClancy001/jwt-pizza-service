@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../service');
-const e = require('express');
 const { Role, DB } = require('../database/database.js');
 const testUser = { name: 'pizza diner', email: 'reg@test.com', password: 'a' };
 let testUserAuthToken;
@@ -49,6 +48,7 @@ test('not admin create franchise', async () => {
     expect(res.status).toBe(403);
     expect(res.body.message).toBe('unable to create a franchise');
     const logoutRes = await request(app).delete('/api/auth').set('Authorization', `Bearer ${testUserAuthToken}`);
+    expect(logoutRes.status).toBe(200);
 });
 
 test('admin create franchise', async () => {

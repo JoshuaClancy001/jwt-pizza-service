@@ -1,11 +1,9 @@
 const request = require('supertest');
 const app = require('../service');
-const e = require('express');
 const { Role, DB } = require('../database/database.js');
 
 const testUser = { name: 'pizza diner', email: 'reg@test.com', password: 'a' };
 let testUserAuthToken;
-let userId;
 
 function randomName() {
   return Math.random().toString(36).substring(2, 12);
