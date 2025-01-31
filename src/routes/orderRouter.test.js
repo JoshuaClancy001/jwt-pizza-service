@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../service');
 const { Role, DB } = require('../database/database.js');
+const e = require('express');
 const testUser = { name: 'pizza diner', email: 'reg@test.com', password: 'a' };
 let testUserAuthToken;
 let storeID;
@@ -21,12 +22,25 @@ async function createAdminUser() {
 
 beforeAll(async () => {
 
+    
+
     if (process.env.VSCODE_INSPECTOR_OPTIONS) {
         jest.setTimeout(60 * 1000 * 5); // 5 minutes
       }
     const admin = await createAdminUser();
     const loginRes = await request(app).put('/api/auth').send(admin);
     const adminAuthToken = loginRes.body.token;
+
+    const franchiseRequest = {
+        name: admin.name + ' franchise',
+        admins: [{ email: admin.email }], // Only sending email as expected by createFranchise
+      }
+  
+    const createFranchise = await request(app)
+    .post('/api/franchise')
+    .set('Authorization', `Bearer ${adminAuthToken}`)
+    .send(franchiseRequest);
+    expect(createFranchise.status).toBe(200);
 
     const getFranchise = await request(app).get('/api/franchise');
     const franchiseId = getFranchise.body[0].id;
