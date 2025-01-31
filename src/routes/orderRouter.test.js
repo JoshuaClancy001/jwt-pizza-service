@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../service');
 const { Role, DB } = require('../database/database.js');
-const e = require('express');
 const testUser = { name: 'pizza diner', email: 'reg@test.com', password: 'a' };
 let testUserAuthToken;
 let storeID;
