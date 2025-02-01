@@ -118,20 +118,20 @@ test('create store admin', async () => {
     storeID = res.body.id;
 });
 
-// test('create order', async () => {
-//     testUser.email = Math.random().toString(36).substring(2, 12) + '@test.com';
-//     const registerRes = await request(app).post('/api/auth').send(testUser);
-//     testUserAuthToken = registerRes.body.token;
-//     const loginRes = await request(app).put('/api/auth').send(testUser);
-//     const getFranchise = await request(app).get('/api/franchise');
-//     const franchiseId = getFranchise.body[0].id;
-//     const getStore = await request(app).get(`/api/franchise/${franchiseId}/store`);
-//     const res = await request(app)
-//         .post('/api/order')
-//         .set('Authorization', `Bearer ${testUserAuthToken}`)
-//         .send({ franchiseId: franchiseId, storeId: storeID, items: [{ menuId: menuID, description: 'Veggie', price: 0.05 }] });
-//     expect(res.status).toBe(200);
-// });
+test('create order', async () => {
+    testUser.email = Math.random().toString(36).substring(2, 12) + '@test.com';
+    const registerRes = await request(app).post('/api/auth').send(testUser);
+    testUserAuthToken = registerRes.body.token;
+    const loginRes = await request(app).put('/api/auth').send(testUser);
+    const getFranchise = await request(app).get('/api/franchise');
+    const franchiseId = getFranchise.body[0].id;
+    const getStore = await request(app).get(`/api/franchise/${franchiseId}/store`);
+    const res = await request(app)
+        .post('/api/order')
+        .set('Authorization', `Bearer ${testUserAuthToken}`)
+        .send({ franchiseId: franchiseId, storeId: storeID, items: [{ menuId: 1, description: 'Veggie', price: 0.05 }] });
+    expect(res.status).toBe(200);
+});
 
 test('delete store not admin', async () => {
     testUser.email = Math.random().toString(36).substring(2, 12) + '@test.com';
