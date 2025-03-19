@@ -18,7 +18,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: tempdbpassword
           MYSQL_DATABASE: pizza
         ports:
-          - '3306:3306'
+          - "3306:3306"
         options: >-
           --health-cmd "mysqladmin ping -ptempdbpassword"
           --health-interval 10s
@@ -32,14 +32,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: "22.x"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Lint
         run: npm run lint
-
       - name: Write config file
         run: |
           echo "module.exports = {
@@ -58,8 +57,12 @@ jobs:
               url: 'https://pizza-factory.cs329.click',
               apiKey: '${{ secrets.FACTORY_API_KEY }}',
             },
+            metrics: {
+              source: 'jwt-pizza-service',
+              url: '${{ secrets.METRICS_URL }}',
+              apiKey: '${{ secrets.METRICS_API_KEY }}',
+            },            
           };" > src/config.js
-
       - name: Tests
         run: npm test
 
@@ -93,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: package
-          path: dist/  
+          path: dist/
   deploy:
     runs-on: ubuntu-latest
     permissions:
@@ -124,7 +127,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: 'jwt-pizza-service'
+          ECR_REPOSITORY: "jwt-pizza-service"
         run: |
           docker build --platform=linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY --push .
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >>  $GITHUB_OUTPUT
