@@ -238,4 +238,13 @@ setInterval(() => {
 
 }, 10000);
 
-module.exports = { requestTracker, addActiveUser, removeActiveUser, addSuccessAuth, addFailedAuth, addPizzaSold, addPizzaFailure, addRevenue, trackLatency, trackPizzaLatency };
+module.exports = { requestTracker, 
+    addActiveUser, 
+    removeActiveUser, 
+    addSuccessAuth, 
+    addFailedAuth, 
+    addPizzaSold, 
+    addPizzaFailure, 
+    addRevenue, 
+    trackLatency, 
+    trackPizzaLatency };
