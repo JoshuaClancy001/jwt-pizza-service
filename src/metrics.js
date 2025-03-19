@@ -1,4 +1,3 @@
-const { send } = require('process');
 const config = require('./config');
 const os = require('os');
 
@@ -88,13 +87,6 @@ function clearUpInactiveUsers(){
 
 function removeActiveUser(user){
     delete activeUsers[user];
-}
-
-
-
-function authenticationTracker(req, res, next) {
-    const endpoint = req.path;
-    auths[endpoint] = (auths[endpoint] || 0) + 1;
 }
 
 function sendMetricToGrafana(metricName, metricValue, attributes) {
