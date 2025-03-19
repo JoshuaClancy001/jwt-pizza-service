@@ -1,7 +1,7 @@
 const config = require('./config');
 const os = require('os');
 
-let totalRequests = 0;
+let totalRequestss = 0;
 
 
 function getCpuUsagePercentage() {
@@ -29,7 +29,7 @@ let pizzaLatency = 0.0
 const activeUsers = {};
 
 function requestTracker(req, res, next) {
-    totalRequests++;
+    totalRequestss++;
     const method = req.method;  // Extract only the method (GET, POST, etc.)
     requests[method] = (requests[method] || 0) + 1;
     next();
@@ -223,12 +223,12 @@ setInterval(() => {
     console.log(failedAuths)
     sendMetricToGrafana('failedAuths', failedAuths);
 
-    sendMetricToGrafana('numRequests', totalRequests);
+    sendMetricToGrafana('numRequests', totalRequestss);
     Object.keys(requests).forEach((method) => {
         sendMetricToGrafana('requests_per_method', requests[method], { method: method });
     });
 
-    sendGaugeMetricToGrafana('latency', latencyNumber / totalRequests);
+    sendGaugeMetricToGrafana('latency', latencyNumber / totalRequestss);
     latencyNumber = 0.0;
     console.log(pizzaLatency)
     sendGaugeMetricToGrafana('pizzaLatency', pizzaLatency / numPizzasSold);
