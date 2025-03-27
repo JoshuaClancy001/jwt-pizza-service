@@ -79,7 +79,6 @@ function clearUpInactiveUsers(){
     const now = Date.now();
     Object.keys(activeUsers).forEach((user) => {
         if (activeUsers[user] < now) {
-            console.log('cleared up inactive user', user);
             delete activeUsers[user];
         }
     });
@@ -210,17 +209,17 @@ setInterval(() => {
     clearUpInactiveUsers();
     sendMetricToGrafana('activeUsers', Object.keys(activeUsers).length);
 
-    console.log(numPizzasSold)
+   
     sendMetricToGrafana('numPizzasSold', numPizzasSold);
-    console.log(createPizzaFailures)
+   
     sendMetricToGrafana('createPizzaFailures', createPizzaFailures);
-    console.log(totalRevenue)
+
     sendGaugeMetricToGrafana('totalRevenue', totalRevenue);
 
 
-    console.log(successfulAuths)
+
     sendMetricToGrafana('successfulAuths', successfulAuths);
-    console.log(failedAuths)
+  
     sendMetricToGrafana('failedAuths', failedAuths);
 
     sendMetricToGrafana('numRequests', totalRequestss);
