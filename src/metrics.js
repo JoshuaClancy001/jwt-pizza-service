@@ -27,6 +27,12 @@ let totalRevenue = 0
 let latencyNumber = 0.0
 let pizzaLatency = 0.0
 const activeUsers = {};
+let chaosCount = 0;
+
+
+function addChaosCount(){
+    chaosCount++;
+}
 
 function requestTracker(req, res, next) {
     totalRequestss++;
@@ -133,9 +139,9 @@ function sendMetricToGrafana(metricName, metricValue, attributes) {
   })
     .then((response) => {
       if (!response.ok) {
-        console.error('Failed to push metrics data to Grafana');
+        //console.error('Failed to push metrics data to Grafana');
       } else {
-        console.log(`Pushed ${metricName}`);
+        //console.log(`Pushed ${metricName}`);
       }
     })
     .catch((error) => {
@@ -187,9 +193,9 @@ function sendGaugeMetricToGrafana(metricName, metricValue, attributes) {
     })
       .then((response) => {
         if (!response.ok) {
-          console.error('Failed to push gauge metric to Grafana');
+          //console.error('Failed to push gauge metric to Grafana');
         } else {
-          console.log(`Pushed gauge ${metricName}`);
+          //console.log(`Pushed gauge ${metricName}`);
         }
       })
       .catch((error) => {
@@ -233,6 +239,9 @@ setInterval(() => {
     sendGaugeMetricToGrafana('pizzaLatency', pizzaLatency / numPizzasSold);
     pizzaLatency = 0.0;
 
+    sendMetricToGrafana('chaosCount', chaosCount);
+    chaosCount = 0;
+
 
 
 }, 10000);
@@ -241,6 +250,7 @@ module.exports = { requestTracker,
     addActiveUser, 
     removeActiveUser, 
     addSuccessAuth, 
+    addChaosCount,
     addFailedAuth, 
     addPizzaSold, 
     addPizzaFailure, 
