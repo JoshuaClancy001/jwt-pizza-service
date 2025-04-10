@@ -74,28 +74,6 @@ orderRouter.get(
     res.json(await DB.getOrders(req.user, req.query.page));
   })
 );
-
-let enableChaos = false;
-orderRouter.put(
-  '/chaos/:state',
-  authRouter.authenticateToken,
-  asyncHandler(async (req, res) => {
-    if (req.user.isRole(Role.Admin)) {
-      enableChaos = req.params.state === 'true';
-    }
-
-    res.json({ chaos: enableChaos });
-  })
-);
-
-orderRouter.post('/', (req, res, next) => {
-  if (enableChaos && Math.random() < 0.5) {
-    metrics.addChaosCount();
-    throw new StatusCodeError('Chaos monkey', 500);
-  }
-  next();
-});
-
 // createOrder
 orderRouter.post(
   '/', 
